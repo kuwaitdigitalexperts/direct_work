@@ -1,0 +1,7 @@
+---
+deployment:
+  tasks:
+    - export DEPLOYPATH=/home/$USER/public_html
+    - /bin/cp -R web/* $DEPLOYPATH/
+    - /bin/cp -R backend/storage/direct_jobs_database.json $DEPLOYPATH/storage/app/direct_jobs_database.json
+    - /bin/chmod -R 775 $DEPLOYPATH/storage $DEPLOYPATH/bootstrap/cache

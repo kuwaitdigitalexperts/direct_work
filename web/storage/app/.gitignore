@@ -1,0 +1,6 @@
+*
+!private/
+!public/
+!.gitignore
+!sectors.json
+!direct_jobs_database.json
