@@ -3,6 +3,7 @@ import 'package:go_router/go_router.dart';
 import '../features/splash/splash_screen.dart';
 import '../features/onboarding/onboarding_screen.dart';
 import '../features/auth/market_selection_screen.dart';
+import '../features/auth/country_selection_screen.dart';
 import '../features/auth/account_selection_screen.dart';
 import '../features/auth/login_screen.dart';
 import '../features/auth/register_screen.dart';
@@ -57,6 +58,17 @@ final GoRouter appRouter = GoRouter(
     GoRoute(
       path: '/account-selection',
       builder: (context, state) => const AccountSelectionScreen(),
+    ),
+    GoRoute(
+      path: '/country-selection',
+      builder: (context, state) {
+        final role = state.uri.queryParameters['role'] ?? 'company';
+        return CountrySelectionScreen(role: role);
+      },
+    ),
+    GoRoute(
+      path: '/company-country-selection',
+      builder: (context, state) => const CountrySelectionScreen(role: 'company'),
     ),
     GoRoute(
       path: '/login',

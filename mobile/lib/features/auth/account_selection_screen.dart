@@ -168,11 +168,7 @@ class _AccountSelectionScreenState extends State<AccountSelectionScreen> {
                 height: 52,
                 child: ElevatedButton(
                   onPressed: () {
-                    if (_selectedRole == UserRole.company) {
-                      context.push('/company-register');
-                    } else {
-                      context.push('/register?role=${_selectedRole.toApiString()}');
-                    }
+                    context.push('/country-selection?role=${_selectedRole.toApiString()}');
                   },
                   style: ElevatedButton.styleFrom(
                     backgroundColor: AppColors.primary,

@@ -118,6 +118,36 @@ class _CompanyRegisterScreenState extends ConsumerState<CompanyRegisterScreen> {
                       : 'Post vacancies and hire top professionals and skilled workers directly',
                   style: const TextStyle(fontSize: 13, color: AppColors.textSecondary),
                 ),
+                const SizedBox(height: 12),
+                InkWell(
+                  onTap: () => context.push('/country-selection?role=company'),
+                  borderRadius: BorderRadius.circular(12),
+                  child: Container(
+                    padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+                    decoration: BoxDecoration(
+                      color: AppColors.primaryLight,
+                      borderRadius: BorderRadius.circular(12),
+                      border: Border.all(color: AppColors.primary.withOpacity(0.3)),
+                    ),
+                    child: Row(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        Text(activeCountry.flagEmoji, style: const TextStyle(fontSize: 18)),
+                        const SizedBox(width: 8),
+                        Text(
+                          l10n.isArabic ? activeCountry.nameAr : activeCountry.nameEn,
+                          style: const TextStyle(
+                            fontSize: 13,
+                            fontWeight: FontWeight.bold,
+                            color: AppColors.primary,
+                          ),
+                        ),
+                        const SizedBox(width: 6),
+                        const Icon(Icons.edit_rounded, size: 14, color: AppColors.primary),
+                      ],
+                    ),
+                  ),
+                ),
                 const SizedBox(height: 20),
 
                 if (authState.errorMessage != null)
