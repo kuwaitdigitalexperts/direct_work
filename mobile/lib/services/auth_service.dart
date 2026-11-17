@@ -26,9 +26,9 @@ class AuthService {
 
   static String normalizePhone(String phone) {
     String digits = phone.replaceAll(RegExp(r'\D'), '');
-    if (digits.startsWith('00965')) {
+    if (digits.startsWith('00965') || digits.startsWith('00966') || digits.startsWith('00971')) {
       digits = digits.substring(5);
-    } else if (digits.startsWith('965') && digits.length > 8) {
+    } else if ((digits.startsWith('965') || digits.startsWith('966') || digits.startsWith('971')) && digits.length > 8) {
       digits = digits.substring(3);
     }
     return digits;
@@ -488,7 +488,7 @@ class AuthService {
           code: 'email_already_registered',
         );
       }
-      if (normPhone.isNotEmpty && p == normPhone) {
+      if (normPhone.isNotEmpty && p == normPhone && p != '22000000') {
         throw const AuthException(
           'رقم الهاتف مسجل بالفعل. يرجى تسجيل الدخول أو استخدام رقم آخر.',
           code: 'phone_already_registered',

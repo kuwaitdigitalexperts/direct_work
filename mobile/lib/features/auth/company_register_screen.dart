@@ -20,13 +20,13 @@ class _CompanyRegisterScreenState extends ConsumerState<CompanyRegisterScreen> {
   final _formKey = GlobalKey<FormState>();
   final _contactPersonController = TextEditingController();
   final _companyNameController = TextEditingController();
+  final _phoneController = TextEditingController();
   final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
   final _confirmPasswordController = TextEditingController();
 
   // Commented out fields for next version:
   // final _licenseController = TextEditingController();
-  // final _phoneController = TextEditingController();
   // String _selectedGovernorate = KuwaitData.governorates.first['name_ar']!;
 
   bool _obscurePassword = true;
@@ -37,6 +37,7 @@ class _CompanyRegisterScreenState extends ConsumerState<CompanyRegisterScreen> {
   void dispose() {
     _contactPersonController.dispose();
     _companyNameController.dispose();
+    _phoneController.dispose();
     _emailController.dispose();
     _passwordController.dispose();
     _confirmPasswordController.dispose();
@@ -53,11 +54,14 @@ class _CompanyRegisterScreenState extends ConsumerState<CompanyRegisterScreen> {
     }
 
     final active = ref.read(countryProvider);
+    final phoneDigits = _phoneController.text.trim().replaceAll(RegExp(r'[^0-9]'), '');
+    final fullPhone = '${active.phoneCode} $phoneDigits';
+
     final success = await ref.read(authProvider.notifier).registerCompany(
       companyName: _companyNameController.text.trim(),
       contactPerson: _contactPersonController.text.trim(),
       email: _emailController.text.trim(),
-      phone: '${active.phoneCode} 22000000',
+      phone: fullPhone,
       password: _passwordController.text,
       commercialLicense: '${active.id.toUpperCase()}-${DateTime.now().millisecondsSinceEpoch.toString().substring(7)}',
       governorate: active.regions.first['name_ar'] ?? 'المنطقة الرئيسية',
@@ -201,7 +205,88 @@ class _CompanyRegisterScreenState extends ConsumerState<CompanyRegisterScreen> {
                 ),
                 const SizedBox(height: 14),
 
-                // 3. Email Address
+                // 3. Company Phone Number (Country Code Locked)
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      l10n.isArabic ? 'رقم هاتف الشركة *' : 'Company Phone Number *',
+                      style: const TextStyle(
+                        fontSize: 14,
+                        fontWeight: FontWeight.w600,
+                        color: AppColors.textPrimary,
+                      ),
+                    ),
+                    const SizedBox(height: 6),
+                    TextFormField(
+                      controller: _phoneController,
+                      keyboardType: TextInputType.phone,
+                      style: const TextStyle(
+                        fontSize: 14,
+                        fontWeight: FontWeight.w500,
+                        color: AppColors.textPrimary,
+                      ),
+                      validator: (v) {
+                        if (v == null || v.trim().isEmpty) {
+                          return l10n.isArabic ? 'يرجى إدخال رقم الهاتف' : 'Please enter phone number';
+                        }
+                        final digits = v.replaceAll(RegExp(r'[^0-9]'), '');
+                        final expectedLen = activeCountry.id == 'kw' ? 8 : 9;
+                        if (digits.length < expectedLen) {
+                          return l10n.isArabic
+                              ? 'يرجى إدخال $expectedLen أرقام لرقم الهاتف'
+                              : 'Please enter $expectedLen digits';
+                        }
+                        return null;
+                      },
+                      decoration: InputDecoration(
+                        hintText: activeCountry.id == 'kw'
+                            ? (l10n.isArabic ? 'أدخل 8 أرقام' : 'Enter 8 digits')
+                            : (l10n.isArabic ? 'أدخل 9 أرقام' : 'Enter 9 digits'),
+                        prefixIcon: Row(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            const SizedBox(width: 12),
+                            const Icon(Icons.phone_outlined, color: AppColors.textMuted, size: 20),
+                            const SizedBox(width: 8),
+                            Container(
+                              padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                              decoration: BoxDecoration(
+                                color: const Color(0xFFF1F5F9),
+                                borderRadius: BorderRadius.circular(8),
+                                border: Border.all(color: const Color(0xFFE2E8F0)),
+                              ),
+                              child: Row(
+                                mainAxisSize: MainAxisSize.min,
+                                children: [
+                                  Text(activeCountry.flagEmoji, style: const TextStyle(fontSize: 16)),
+                                  const SizedBox(width: 4),
+                                  Directionality(
+                                    textDirection: TextDirection.ltr,
+                                    child: Text(
+                                      activeCountry.phoneCode,
+                                      style: const TextStyle(
+                                        fontWeight: FontWeight.bold,
+                                        fontSize: 13,
+                                        color: AppColors.textPrimary,
+                                      ),
+                                    ),
+                                  ),
+                                  const SizedBox(width: 4),
+                                  const Icon(Icons.lock_outline_rounded, size: 13, color: Color(0xFF64748B)),
+                                ],
+                              ),
+                            ),
+                            const SizedBox(width: 10),
+                          ],
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+                const SizedBox(height: 14),
+
+                // 4. Email Address
                 AppTextField(
                   controller: _emailController,
                   label: l10n.translate('email_address'),
