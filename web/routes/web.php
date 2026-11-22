@@ -12,6 +12,7 @@ use App\Http\Controllers\ChatController;
 use App\Http\Controllers\ApiController;
 use App\Http\Controllers\SupportController;
 use App\Http\Controllers\EmployerController;
+use App\Http\Controllers\PrivacyController;
 
 // Home & Market Context
 Route::get('/', [HomeController::class, 'index'])->name('home');
@@ -67,6 +68,11 @@ Route::post('/chats/{id}', [ChatController::class, 'send'])->name('chats.send');
 // Help & Support Center
 Route::get('/support', [SupportController::class, 'index'])->name('support');
 Route::post('/support', [SupportController::class, 'sendTicket'])->name('support.send');
+
+// Legal & Compliance: Privacy Policy (Android & iOS Google Play / App Store) & Terms
+Route::get('/privacy-policy', [PrivacyController::class, 'index'])->name('privacy');
+Route::get('/privacy', [PrivacyController::class, 'index'])->name('privacy.short');
+Route::get('/terms', [PrivacyController::class, 'terms'])->name('terms');
 
 // Employer & Offices Portals (Matching Screenshots)
 Route::get('/portals', [EmployerController::class, 'portals'])->name('portals');

@@ -275,12 +275,12 @@
                             </a>
                         </li>
                         <li>
-                            <a href="#" class="hover:text-blue-600 transition">
-                                {{ ($isArabic ?? false) ? 'سياسة الخصوصية' : 'Privacy Policy' }}
+                            <a href="{{ route('privacy') }}" class="hover:text-blue-600 transition">
+                                {{ ($isArabic ?? false) ? 'سياسة الخصوصية (تطبيق والموقع)' : 'Privacy Policy (Apps & Web)' }}
                             </a>
                         </li>
                         <li>
-                            <a href="#" class="hover:text-blue-600 transition">
+                            <a href="{{ route('terms') }}" class="hover:text-blue-600 transition">
                                 {{ ($isArabic ?? false) ? 'الشروط والأحكام' : 'Terms & Conditions' }}
                             </a>
                         </li>
